@@ -39,9 +39,21 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/complaints", complaintRoutes);
 
 // Root endpoint
-app.get("/", (req, res) => {
-  res.send("Backend API is actually running...");
+app.get("/test-email", async (req, res) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: "khaledblings@gmail.com",
+      subject: "Render Test Email",
+      html: "<h1>Hello from Render!</h1>",
+    });
+    res.send("Email sent!");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Email failed: " + err.message);
+  }
 });
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
