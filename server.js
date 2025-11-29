@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import complaintRoutes from "./routes/complaintRoutes.js";
+import { sendEmail } from "./utils/mail.js"; // <-- import sendEmail
 
 // Load .env
 dotenv.config();
@@ -21,7 +22,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://neriah-photography.vercel.app"
+      "https://neriah-photography.vercel.app",
+      process.env.FRONTEND_URL // optional for env-based URL
     ],
     credentials: true,
   })
@@ -38,11 +40,10 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/complaints", complaintRoutes);
 
-// Root endpoint
+// Test email endpoint
 app.get("/testemail", async (req, res) => {
   try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await sendEmail({
       to: "khaledblings@gmail.com",
       subject: "Render Test Email",
       html: "<h1>Hello from Render!</h1>",
@@ -54,9 +55,6 @@ app.get("/testemail", async (req, res) => {
   }
 });
 
-
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`Server running on port ${PORT}`)
-);
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
