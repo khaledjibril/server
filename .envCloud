@@ -1,0 +1,18 @@
+# === DATABASE (Render PostgreSQL) ===
+DB_HOST=dpg-d4l14eu3jp1c7394e1ag-a.oregon-postgres.render.com
+DB_USER=photography_db_ps6v_user
+DB_PASSWORD=O0QAh1hXFhwXaM7Uz6rCpVKyog8eIR3m
+DB_NAME=photography_db_ps6v
+DB_PORT=5432
+
+# === JWT ===
+JWT_SECRET=supersecret123   # keep your original one
+
+# === EMAIL SETTINGS ===
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=465
+EMAIL_USER=khaleedkblings@gmail.com
+EMAIL_PASS=tqhyphupxdhwcsra
+
+# === FRONTEND URL ===
+FRONTEND_URL=http://localhost:3000
