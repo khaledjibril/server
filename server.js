@@ -39,7 +39,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/complaints", complaintRoutes);
 
 // Root endpoint
-app.get("/test-email", async (req, res) => {
+app.get("/testemail", async (req, res) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
