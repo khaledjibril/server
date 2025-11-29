@@ -40,7 +40,7 @@ app.use("/api/complaints", complaintRoutes);
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.send("Backend API is running...");
+  res.send("Backend API is actually running...");
 });
 
 // Start server
