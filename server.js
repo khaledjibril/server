@@ -7,7 +7,8 @@ import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import complaintRoutes from "./routes/complaintRoutes.js";
-import { sendEmail } from "./utils/mail.js"; // <-- import sendEmail
+import authPassword from "./routes/authPassword.js";
+import userRoutes from "./routes/userRolesRoutes.js";
 
 // Load .env
 dotenv.config();
@@ -28,33 +29,20 @@ app.use(
     credentials: true,
   })
 );
+// psql "postgresql://photography_db_ps6v_user:O0QAh1hXFhwXaM7Uz6rCpVKyog8eIR3m@dpg-d4l14eu3jp1c7394e1ag-a.oregon-postgres.render.com:5432/photography_db_ps6v?sslmode=require"
 
 // Handle uploads folder
 const __dirname = path.resolve();
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static("uploads"));
 
 // API Routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/auth", authPassword);
 app.use("/api/orders", orderRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/complaints", complaintRoutes);
+app.use("/api/users", userRoutes);
 
-// Test email endpoint
-app.get("/testemail", async (req, res) => {
-  try {
-    await sendEmail({
-      to: "khaledblings@gmail.com",
-      subject: "Render Test Email",
-      html: "<h1>Hello from Render!</h1>",
-    });
-    res.send("Email sent!");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Email failed: " + err.message);
-  }
-});
-
-// Start server
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
