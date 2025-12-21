@@ -1,4 +1,4 @@
-export const sizePrices = {
+export const SIZE_PRICES = {
   "5x7": 4500,
   "8x10": 8000,
   "10x12": 10500,
@@ -10,13 +10,29 @@ export const sizePrices = {
   "24x30": 70200,
   "24x35": 86500,
   "30x35": 120000,
-  "35x40": 155000,
+  "35x40": 155000
 };
 
-export const framePrice = 15000;
+export const FRAME_PRICES = {
+  "Black wood": 12000,
+  "White wood": 12000,
+  "Natural oak": 15000,
+  "Fabre wood": 18000
+};
 
-export function calculatePrice(size, frame) {
-  let total = sizePrices[size] || 0;
-  if (frame === "yes") total += framePrice;
+export const calculateTotalPrice = ({ size, frame, frameType }) => {
+  if (!SIZE_PRICES[size]) {
+    throw new Error("Invalid print size");
+  }
+
+  let total = SIZE_PRICES[size];
+
+  if (frame === "yes") {
+    if (!FRAME_PRICES[frameType]) {
+      throw new Error("Invalid frame type");
+    }
+    total += FRAME_PRICES[frameType];
+  }
+
   return total;
-}
+};

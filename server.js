@@ -5,10 +5,13 @@ import dotenv from "dotenv";
 import adminRoutes from "./routes/adminRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import pricingRoutes from "./routes/pricingRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import complaintRoutes from "./routes/complaintRoutes.js";
 import authPassword from "./routes/authPassword.js";
 import userRoutes from "./routes/userRolesRoutes.js";
+import adminOrderRoutes from "./routes/adminOrderRoutes.js";
+
 
 // Load .env
 dotenv.config();
@@ -41,8 +44,11 @@ app.use("/api/auth", authRoutes);
 app.use("/auth", authPassword);
 app.use("/api/orders", orderRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/pricing", pricingRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/admin", adminOrderRoutes);
+
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

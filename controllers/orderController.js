@@ -1,33 +1,51 @@
 import pool from "../config/db.js";
-
-import { calculatePrice } from "../utils/priceCalculator.js";
+import { calculateTotalPrice } from "../utils/priceCalculator.js";
 
 export const createOrder = async (req, res) => {
   try {
     const { size, frame, frameType, address } = req.body;
+    const imageFile = req.file;
 
-    if (!req.file || !size || !frame || !address) {
+    if (!imageFile || !size || !address) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
-    const totalPrice = calculatePrice(size, frame);
+    // 🔐 Backend price calculation
+    const totalPrice = calculateTotalPrice({
+      size,
+      frame,
+      frameType
+    });
 
-    const result = await pool.query(
-      `
-      INSERT INTO orders (image_url, size, frame, frame_type, address, total_price)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *
-      `,
-      [imageUrl, size, frame, frameType || null, address, totalPrice]
-    );
+    const imagePath = `/uploads/${imageFile.filename}`;
+
+    const query = `
+      INSERT INTO orders
+      (full_name, email, size, frame, frame_type, address, total_price, image_path)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *;
+    `;
+
+    const values = [
+      req.body.full_name,
+      req.body.email,
+      size,
+      frame,
+      frame === "yes" ? frameType : null,
+      address,
+      totalPrice,
+      imagePath
+    ];
+
+    const { rows } = await pool.query(query, values);
 
     res.status(201).json({
-      message: "Order created successfully",
-      order: result.rows[0],
+      message: "Order created",
+      order: rows[0]
     });
-  } catch (error) {
-    console.error("CREATE ORDER ERROR:", error);
-    res.status(500).json({ message: "Server error" });
+
+  } catch (err) {
+    console.error("CREATE ORDER ERROR:", err);
+    res.status(500).json({ message: err.message });
   }
 };
