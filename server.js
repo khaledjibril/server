@@ -26,7 +26,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://neriah-photography.vercel.app",
+      "https://neriah.vercel.app",
       process.env.FRONTEND_URL // optional for env-based URL
     ],
     credentials: true,
