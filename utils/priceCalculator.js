@@ -14,10 +14,10 @@ export const SIZE_PRICES = {
 };
 
 export const FRAME_PRICES = {
-  "Black wood": 12000,
-  "White wood": 12000,
-  "Natural oak": 15000,
-  "Fabre wood": 18000
+  "Black wood": 0,
+  "White wood": 0,
+  "Natural oak": 0,
+  "Fabre wood": 0
 };
 
 export const calculateTotalPrice = ({ size, frame, frameType }) => {
