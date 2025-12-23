@@ -14,10 +14,10 @@ export const SIZE_PRICES = {
 };
 
 export const FRAME_PRICES = {
-  "Black wood": 0,
-  "White wood": 0,
-  "Natural oak": 0,
-  "Fabre wood": 0
+  "Black wood": 1,
+  "White wood": 1,
+  "Natural oak": 1,
+  "Fabre wood": 1
 };
 
 export const calculateTotalPrice = ({ size, frame, frameType }) => {
@@ -31,7 +31,7 @@ export const calculateTotalPrice = ({ size, frame, frameType }) => {
     if (!FRAME_PRICES[frameType]) {
       throw new Error("Invalid frame type");
     }
-    total += FRAME_PRICES[frameType];
+    total *= FRAME_PRICES[frameType];
   }
 
   return total;
