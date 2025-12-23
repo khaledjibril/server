@@ -48,32 +48,21 @@ export const createOrder = async (req, res) => {
     console.error("CREATE ORDER ERROR:", err);
     res.status(500).json({ message: err.message });
   }
-};
-export const getUserOrders = async (req, res) => {
-  try {
-    const userEmail = req.user.email; // from JWT middleware
+};export const getUserOrders = async (req, res) => {
+  const userId = req.user.id; // safe to use
 
-    const { rows } = await pool.query(
-      `
-      SELECT
-        id,
-        size,
-        frame,
-        frame_type,
-        address,
-        total_price,
-        image_path,
-        created_at
-      FROM orders
-      WHERE email = $1
-      ORDER BY created_at DESC
-      `,
-      [userEmail]
+  try {
+    const result = await pool.query(
+      `SELECT id, size, frame, frame_type, address, total_price, image_path, created_at
+       FROM orders
+       WHERE user_id = $1
+       ORDER BY created_at DESC`,
+      [userId]
     );
 
-    res.json(rows);
+    return res.json(result.rows);
   } catch (err) {
-    console.error("Error fetching user orders:", err);
-    res.status(500).json({ message: "Failed to fetch orders" });
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
   }
 };

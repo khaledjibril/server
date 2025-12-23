@@ -36,7 +36,11 @@ app.use(
 
 // Handle uploads folder
 const __dirname = path.resolve();
-app.use("/uploads", express.static("uploads"));
+
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
 // API Routes
 app.use("/api/admin", adminRoutes);
