@@ -295,11 +295,11 @@ const html = `
 </html>`;
 
 
-    await sendEmail({
-      to: email,
-      subject: "Password Reset Code",
-      html,
-    });
+    // await sendEmail({
+    //   to: email,
+    //   subject: "Password Reset Code",
+    //   html,
+    // });
 
     res.json({ message: "Reset code sent" });
   } catch (err) {
