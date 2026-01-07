@@ -5,6 +5,7 @@ import {
   getRecentUsersController,
   getRecentOrdersController,
   addGalleryImage,
+  getGalleryImages,
 } from "../controllers/adminController.js";
 import { fetchBookings } from "../controllers/bookingController.js";
 
@@ -26,6 +27,7 @@ router.get("/stats", getStats);
 router.get("/recent-users", getRecentUsersController);
 router.get("/recent-orders", getRecentOrdersController);
 router.post("/gallery", upload.single("file"), addGalleryImage);
+router.get("/gallery", getGalleryImages); // ✅ REQUIRED
 
 
 

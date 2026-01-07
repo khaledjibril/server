@@ -78,15 +78,17 @@ export const addGalleryImage = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 export const getGalleryImages = async (req, res) => {
   try {
-    const { rows } = await pool.query(
-      "SELECT * FROM gallery ORDER BY created_at DESC"
+    const result = await pool.query(
+      `SELECT id, title, description, image_url, created_at
+       FROM gallery
+       ORDER BY created_at DESC`
     );
-    res.json(rows);
+
+    res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to fetch gallery" });
+    console.error("Fetch gallery error:", err);
+    res.status(500).json({ message: "Failed to fetch gallery images" });
   }
 };
