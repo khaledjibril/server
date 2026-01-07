@@ -29,3 +29,5 @@ pool.on("error", (err) => {
 });
 
 export default pool;
+//$env:PGPASSWORD = "194VYZPK7Eafd8JOUxyFRUmqdGoiTvw6"
+//psql -h dpg-d5ehobvgi27c73b164rg-a.oregon-postgres.render.com -U neriah_db_user -d neriah_db

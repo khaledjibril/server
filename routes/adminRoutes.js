@@ -4,7 +4,7 @@ import {
   getStats,
   getRecentUsersController,
   getRecentOrdersController,
-  uploadGalleryImage,
+  addGalleryImage,
 } from "../controllers/adminController.js";
 import { fetchBookings } from "../controllers/bookingController.js";
 
@@ -25,7 +25,7 @@ const upload = multer({ storage });
 router.get("/stats", getStats);
 router.get("/recent-users", getRecentUsersController);
 router.get("/recent-orders", getRecentOrdersController);
-router.post("/gallery", upload.single("file"), uploadGalleryImage);
+router.post("/gallery", upload.single("file"), addGalleryImage);
 
 
 

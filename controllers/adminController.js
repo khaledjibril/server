@@ -1,3 +1,5 @@
+import pool from "../config/db.js";
+
 import {
   getRecentUsers,
   getTotalUsers
@@ -47,20 +49,44 @@ export const getRecentOrdersController = async (req, res) => {
   }
 };
 
-// POST /api/admin/gallery
-export const uploadGalleryImage = async (req, res) => {
+export const addGalleryImage = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const filePath = req.file ? `/uploads/${req.file.filename}` : null;
+    const { title, description, imageUrl } = req.body;
 
-    if (!title || !description || !filePath) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!title || !description || !imageUrl) {
+      return res.status(400).json({ message: "Missing fields" });
     }
 
-    await saveGalleryImage(title, description, filePath);
-    res.json({ message: "Gallery image uploaded successfully" });
+    const query = `
+      INSERT INTO gallery (title, description, image_url)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+
+    const { rows } = await pool.query(query, [
+      title,
+      description,
+      imageUrl,
+    ]);
+
+    res.status(201).json({
+      message: "Gallery image added successfully",
+      image: rows[0],
+    });
+  } catch (err) {
+    console.error("GALLERY ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getGalleryImages = async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT * FROM gallery ORDER BY created_at DESC"
+    );
+    res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to upload gallery image" });
+    res.status(500).json({ message: "Failed to fetch gallery" });
   }
 };
